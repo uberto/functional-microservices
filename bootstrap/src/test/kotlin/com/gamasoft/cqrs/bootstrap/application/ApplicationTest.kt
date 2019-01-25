@@ -2,7 +2,7 @@ package com.gamasoft.cqrs.bootstrap.application
 
 import assertk.assertThat
 import assertk.assertions.isTrue
-import org.junit.jupiter.api.Assertions.*
+import com.gamasoft.cqrs.bootstrap.configuration.ConfigurationMap
 import org.junit.jupiter.api.Test
 
 internal class ApplicationTest {
@@ -11,23 +11,24 @@ internal class ApplicationTest {
     fun startServerOnStart() {
 
         val server = FakeServer()
-        val conf = ConfigurationMap()
 
-        Application(server, conf).start()
+        fun createServer(configuration: AppConfiguration) = server
+
+        val conf = ConfigurationMap(emptyMap())
+
+        Application(::createServer, conf).start()
 
         assertThat(server.isRunning).isTrue()
 
     }
 }
 
-class ConfigurationMap : AppConfiguration {
-    override fun get(key: String): String = "$key value"
-}
+
 
 class FakeServer : AppServer {
     var isRunning = false
 
-    override fun start(configuration: AppConfiguration) {
+    override fun start() {
         isRunning = true
     }
 

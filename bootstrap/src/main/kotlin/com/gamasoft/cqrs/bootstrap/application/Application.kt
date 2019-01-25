@@ -1,10 +1,15 @@
 package com.gamasoft.cqrs.bootstrap.application
 
-class Application(val server: AppServer, val configuration: AppConfiguration) {
+typealias ServerFactory = (AppConfiguration) -> AppServer
+
+
+class Application(val serverFactory: ServerFactory, val configuration: AppConfiguration) {
 
     fun start(){
 
-            server.start(configuration)
+            val server = serverFactory(configuration)
+
+            server.start()
 
             Runtime.getRuntime().addShutdownHook(object : Thread() {
                 override fun run() {
