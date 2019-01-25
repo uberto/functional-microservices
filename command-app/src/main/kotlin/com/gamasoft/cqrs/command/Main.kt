@@ -9,7 +9,7 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 
 
-fun main(args: Array<String>) {
+fun main() {
     val serverFactory = Http4kFactory(CommandRoutes())
     val conf = ConfigurationMap(mapOf("port" to "8081"))
     Application(serverFactory, conf).start()

@@ -2,7 +2,7 @@ apply from: rootProject.file("gradle/kotlin.gradle")
 apply from: rootProject.file("gradle/application.gradle")
 
 
-mainClassName = "com.gamasoft.cqrs.command.Main"
+mainClassName = "com.gamasoft.cqrs.command.MainKt"
 
 dependencies {
     compile project(path: ":event-store-adapter")
