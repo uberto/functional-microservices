@@ -40,6 +40,6 @@ dependencies {
     compile libraries["kotlin"]
     compile libraries["kotlinx-coroutines"]
     
-    testCompile libraries["junit"]
+    testCompile junit
     testCompile libraries["kotlin-reflect"]
 }
