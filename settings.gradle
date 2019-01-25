@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+}
+
+rootProject.name = 'functional-microservices'
+
+include 'bootstrap'
+include 'command-adapter'
+include 'command-app'
+include 'command-domain'
+include 'event-store-adapter'
+include 'event-store-app'
+include 'query-adapter'
+include 'query-app'
+include 'query-domain'
+
+

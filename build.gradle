@@ -1,0 +1,29 @@
+buildscript {
+    apply from: rootProject.file("gradle/dependencies.gradle")
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id "idea"
+}
+
+idea {
+    project {
+        jdkName = "${jvmVersion}"
+        languageLevel = "${jvmVersion}"
+    }
+}
+
+allprojects {
+    buildDir = "target"
+
+}
+
+group 'com.gamasoft.cqrs'
+version '1.0-SNAPSHOT'

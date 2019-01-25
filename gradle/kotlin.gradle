@@ -1,0 +1,45 @@
+apply plugin: "org.jetbrains.kotlin.jvm"
+
+sourceCompatibility = "${jvmVersion}"
+targetCompatibility = "${jvmVersion}"
+
+repositories {
+    jcenter()
+}
+
+test {
+    exclude 'smoke/**/*'
+    exclude 'cdctest/**/*'
+    exclude 'externalintegrationtest/**/*'
+}
+
+task externalAndCdcs(type: Test) {
+    include 'cdctest/**/*'
+    include 'externalintegrationtest/**/*'
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+task smokeTests(type: Test) {
+    include 'smoke/**/*'
+
+    testLogging {
+        exceptionFormat = 'full'
+        events "standardError", "standardOut"
+    }
+}
+
+task launchLocal(type: JavaExec){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "anura.local.LauncherKt"
+}
+
+dependencies {
+    compile libraries["kotlin"]
+    compile libraries["kotlinx-coroutines"]
+    
+    testCompile libraries["junit"]
+    testCompile libraries["kotlin-reflect"]
+}

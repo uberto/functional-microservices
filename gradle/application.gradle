@@ -1,0 +1,6 @@
+apply plugin: "application"
+
+applicationName = archivesBaseName
+applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8", "-Duser.timezone=UTC"]
+
+distTar.enabled = false // No need to build unused distribution TAR.

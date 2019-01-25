@@ -1,0 +1,24 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Users Environment Variables
+.lock-wscript
+
+.DS_Store
+
+*.csv
+*.dat
+*.out
+*.gz

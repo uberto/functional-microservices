@@ -1,0 +1,11 @@
+apply from: rootProject.file("gradle/kotlin.gradle")
+
+
+dependencies {
+    compile libraries["kotlin"]
+    compile libraries["kotlinx-coroutines"]
+
+    testCompile libraries["junit"]
+    testCompile libraries["kotlin-reflect"]
+}
+

@@ -1,0 +1,11 @@
+apply from: rootProject.file("gradle/kotlin.gradle")
+apply from: rootProject.file("gradle/application.gradle")
+
+
+mainClassName = "com.gamasoft.eventstore.Main"
+
+dependencies {
+    compile project(path: ":event-store-adapter")
+    compile project(path: ":bootstrap")
+}
+
