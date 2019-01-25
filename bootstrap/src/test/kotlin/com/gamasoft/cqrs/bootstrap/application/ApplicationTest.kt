@@ -5,18 +5,19 @@ import assertk.assertions.isTrue
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-internal class ApplicationTest
+internal class ApplicationTest {
 
-@Test
-fun startServerOnStart(){
+    @Test
+    fun startServerOnStart() {
 
-    val server = FakeServer()
-    val conf = ConfigurationMap()
+        val server = FakeServer()
+        val conf = ConfigurationMap()
 
-    Application(server, conf).start()
+        Application(server, conf).start()
 
-    assertThat(server.isRunning).isTrue()
+        assertThat(server.isRunning).isTrue()
 
+    }
 }
 
 class ConfigurationMap : AppConfiguration {
