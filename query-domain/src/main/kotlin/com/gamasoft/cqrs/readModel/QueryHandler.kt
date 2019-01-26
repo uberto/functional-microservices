@@ -9,12 +9,12 @@ class QueryHandler {
 
 //    val queryChannel = createActor { qm: QueryMsg -> qm.response.complete(processQuery(qm.query)) }
 //
-//    val eventChannel = createActor { e: Event -> processEvent(e) }
+//    val eventChannel = createActor { e: com.gamasoft.cqrs.event.Event -> processEvent(e) }
 
 //    private val items = mutableMapOf<String, ReadItem>()
 //    private val orders = mutableMapOf<String, ReadOrder>()
 
-//    private fun processEvent(e: Event): ReadEntity? {
+//    private fun processEvent(e: com.gamasoft.cqrs.event.Event): ReadEntity? {
 
 //        return when (e){
 ////            is ItemEvent -> when (e) {

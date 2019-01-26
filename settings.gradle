@@ -12,10 +12,11 @@ include 'bootstrap'
 include 'command-adapter'
 include 'command-app'
 include 'command-domain'
+include 'event-domain'
 include 'event-store-adapter'
 include 'event-store-app'
 include 'query-adapter'
 include 'query-app'
 include 'query-domain'
-
+include 'event-domain'
 

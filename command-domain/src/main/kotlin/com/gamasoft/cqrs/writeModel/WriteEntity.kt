@@ -1,6 +1,6 @@
 package com.gamasoft.cqrs.writeModel
 
-import com.gamasoft.functionalcqrs.eventStore.*
+import com.gamasoft.cqrs.event.*
 
 
 interface EventComposable<T: Event> {
@@ -8,13 +8,29 @@ interface EventComposable<T: Event> {
 }
 
 
-//sealed class Order(val id: String): EventComposable<OrderEvent>{
-//    override abstract fun compose(e: OrderEvent): Order
-//}
-//
-//sealed class Item(val id: String): EventComposable<ItemEvent>{
-//    override abstract fun compose(e: ItemEvent): Item
-//}
+sealed class ToDoItem(): EventComposable<ToDoEvent>{
+    abstract override fun compose(e: ToDoEvent): ToDoItem
+    abstract val id: String
+}
+
+object emptyToDoItem: ToDoItem(){
+    override val id: String = ""
+
+    override fun compose(e: ToDoEvent)= when (e) {
+
+        is ToDoCreated -> ActiveToDoItem(e.key, e.userId, e.description)
+        else -> this //ignore other events
+    }
+
+}
+
+data class ActiveToDoItem(override val id: String, val userId: String, val description: String) : ToDoItem() {
+    override fun compose(e: ToDoEvent)= when (e) {
+
+        is ToDoEdited -> ActiveToDoItem(this.id, this.userId, e.description)
+        else -> this //ignore other events
+    }
+}
 
 //object emptyOrder: Order("") {
 //    override fun compose(e: OrderEvent) = when (e) {

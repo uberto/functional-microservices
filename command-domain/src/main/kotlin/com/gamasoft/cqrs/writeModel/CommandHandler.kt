@@ -1,6 +1,7 @@
 package com.gamasoft.cqrs.writeModel
 
-import com.gamasoft.functionalcqrs.application.createActor
+import com.gamasoft.cqrs.event.Event
+import com.gamasoft.cqrs.event.ToDoEvent
 import com.gamasoft.functionalcqrs.eventStore.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
@@ -29,7 +30,7 @@ class CommandHandler(val eventStore: EventStore) {
 
 
     //if we need we can have multiple instances
-    val sendChannel = createActor<CommandMsg> { executeCommand(it) }
+//    val sendChannel = createActor<CommandMsg> { executeCommand(it) }
 
     private fun executeCommand(msg: CommandMsg) {
 
@@ -37,7 +38,7 @@ class CommandHandler(val eventStore: EventStore) {
 
         if (res is Result.Success)
             runBlocking { //use launch to store events in parallel slightly out of order
-                eventStore.sendChannel.send(res.resultValue)
+//                eventStore.sendChannel.send(res.resultValue)
                 delay(10) //simulate network delay
             }
         msg.response.complete(res)
@@ -62,18 +63,19 @@ class CommandHandler(val eventStore: EventStore) {
 
         val msg = CommandMsg(cmd, CompletableDeferred())
 
-        runBlocking { //use launch to execute commands in parallel slightly out of order
-            sendChannel.send(msg)
-        }
+//        runBlocking { //use launch to execute commands in parallel slightly out of order
+//            sendChannel.send(msg)
+//        }
 
         return msg.response
     }
 
 
 }
-//private fun List<ItemEvent>.fold(): Item {
-//    return this.fold(emptyItem) { i: Item, e: ItemEvent -> i.compose(e)}
-//}
+
+private fun List<ToDoEvent>.fold(): ToDoItem {
+    return this.fold(emptyToDoItem) { i: ToDoItem, e: ToDoEvent -> i.compose(e)}
+}
 
 //private fun List<OrderEvent>.fold(): Order {
 //    return this.fold(emptyOrder) { o: Order, e: OrderEvent -> o.compose(e)}
