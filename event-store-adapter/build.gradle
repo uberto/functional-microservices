@@ -4,6 +4,7 @@ apply from: rootProject.file("gradle/kotlin.gradle")
 dependencies {
     compile libraries["kotlin"]
     compile libraries["kotlinx-coroutines"]
+    compile http4k
 
     testCompile junit
 
