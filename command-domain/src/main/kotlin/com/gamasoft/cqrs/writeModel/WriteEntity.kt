@@ -11,6 +11,8 @@ interface EventComposable<T: Event> {
 sealed class ToDoItem(): EventComposable<ToDoEvent>{
     abstract override fun compose(e: ToDoEvent): ToDoItem
     abstract val id: String
+
+    val ignoreIt = this
 }
 
 object emptyToDoItem: ToDoItem(){
@@ -19,7 +21,9 @@ object emptyToDoItem: ToDoItem(){
     override fun compose(e: ToDoEvent)= when (e) {
 
         is ToDoCreated -> ActiveToDoItem(e.key, e.userId, e.description)
-        else -> this //ignore other events
+        is ToDoEdited -> ignoreIt
+        is ToDoDone -> ignoreIt
+        is ToDoCancelled -> ignoreIt
     }
 
 }
@@ -28,24 +32,17 @@ data class ActiveToDoItem(override val id: String, val userId: String, val descr
     override fun compose(e: ToDoEvent)= when (e) {
 
         is ToDoEdited -> ActiveToDoItem(this.id, this.userId, e.description)
-        else -> this //ignore other events
+        is ToDoCreated -> ignoreIt
+        is ToDoDone -> DoneItem(this.id, this.userId, this.description)
+        is ToDoCancelled -> CancelledItem(this.id, this.userId)
     }
 }
 
-//object emptyOrder: Order("") {
-//    override fun compose(e: OrderEvent) = when (e) {
-//        is Started -> NewOrder(e.phoneNum, emptyList())
-//        else -> this //ignore other events
-//    }
-//}
-//
-//data class NewOrder(val phoneNum: String, val details: List<OrderDetail>): Order(phoneNum) {
-//    override fun compose(e: OrderEvent) = when (e) {
-//        is ItemAdded -> NewOrder(phoneNum, details.plus(OrderDetail(e.itemId, e.quantity)))
-//        is AddressAdded -> ReadyOrder(phoneNum, e.address, details)
-//        is Cancelled -> CancelledOrder(phoneNum)
-//        else -> this
-//    }
-//}
-///etc
+data class DoneItem(override val id: String, val userId: String, val description: String) : ToDoItem() {
+    override fun compose(e: ToDoEvent)= ignoreIt
+}
+
+data class CancelledItem(override val id: String, val userId: String) : ToDoItem() {
+    override fun compose(e: ToDoEvent)= ignoreIt
+}
 

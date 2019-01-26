@@ -2,6 +2,11 @@ package com.gamasoft.cqrs.writeModel
 
 
 sealed class Command
-//data class StartOrder(val phoneNum: String): Command()
-//data class AddItem(val phoneNum: String, val itemId: String, val quantity: Int): Command()
-//etc.
+
+data class CreateNewToDoItem(val userId: String, val desc: String): Command()
+
+data class EditToDoItem(val itemId: String, val newDesc: String): Command()
+
+data class CancelToDoItem(val itemId: String): Command()
+
+data class MarkAsDoneToDoItem(val itemId: String): Command()

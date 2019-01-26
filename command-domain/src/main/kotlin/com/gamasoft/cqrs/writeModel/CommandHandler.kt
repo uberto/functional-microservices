@@ -1,11 +1,15 @@
 package com.gamasoft.cqrs.writeModel
 
-import com.gamasoft.cqrs.event.Event
-import com.gamasoft.cqrs.event.ToDoEvent
+import com.gamasoft.cqrs.event.*
 import com.gamasoft.functionalcqrs.eventStore.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+
+sealed class Validated<out A, out B>()
+
+data class Invalid<A>(val err: A): Validated<A, Nothing>()
+data class Valid<B>(val value: B): Validated<Nothing, B>()
 
 
 sealed class Result<out A, out B> {
@@ -14,12 +18,12 @@ sealed class Result<out A, out B> {
 
 }
 
-typealias ErrorMsg = String
-typealias CmdResult = Result<ErrorMsg, Event>
+sealed class DomainError(val msg: String)
 
+data class ToDoError(val e: String, val item: ToDoItem): DomainError(e)
 
-fun failure(errorMsg: ErrorMsg) = Result.Error(errorMsg)
-fun success(resultValue: Event) = Result.Success(resultValue)
+typealias CmdResult = Validated<DomainError, Event>
+typealias EsScope = EventStore.() -> CmdResult
 
 
 data class CommandMsg(val command: Command,
@@ -34,30 +38,30 @@ class CommandHandler(val eventStore: EventStore) {
 
     private fun executeCommand(msg: CommandMsg) {
 
-        val res = executeMulti(msg.command)
+        val res = processPoly(msg.command)(eventStore)
 
-        if (res is Result.Success)
-            runBlocking { //use launch to store events in parallel slightly out of order
-//                eventStore.sendChannel.send(res.resultValue)
-                delay(10) //simulate network delay
+        runBlocking {
+            //we want to reply after sending the event to the store
+            if (res is Valid) {
+            //    eventStore.sendChannel.send(res.value)
             }
-        msg.response.complete(res)
+            msg.response.complete(res)
+        }
     }
 
-    private fun executeMulti(c: Command): CmdResult {
+    private fun processPoly(c: Command): EsScope {
 
         println("Processing ${c}")
 
-//        val cmdResult = when (c) {
-////            is StartOrder -> execute(eventStore, c)
-////            is AddItem -> execute(eventStore, c)
-//            //etc
-//        }
-//        return cmdResult
+        val cmdResult = when (c) {
 
-        return failure("Undefined")
+            is CreateNewToDoItem -> execute(c)
+            is EditToDoItem -> execute(c)
+            is CancelToDoItem -> execute(c)
+            is MarkAsDoneToDoItem -> execute(c)
+        }
+        return cmdResult
     }
-
 
     fun handle(cmd: Command): CompletableDeferred<CmdResult> {
 
@@ -77,20 +81,33 @@ private fun List<ToDoEvent>.fold(): ToDoItem {
     return this.fold(emptyToDoItem) { i: ToDoItem, e: ToDoEvent -> i.compose(e)}
 }
 
-//private fun List<OrderEvent>.fold(): Order {
-//    return this.fold(emptyOrder) { o: Order, e: OrderEvent -> o.compose(e)}
-//}
-//
-//private fun execute(c: StartOrder, eventStore: EventStore): CmdResult {
-//    val order:Order = eventStore.getEvents<OrderEvent>(c.phoneNum).fold()
-//    return if (order == emptyOrder)
-//        success(Started(c.phoneNum))
-//    else
-//        error("ReadOrder already existing! ${order}")
-//}
-
-//etc.
 
 
+private fun execute(c: CreateNewToDoItem): EsScope = {
+    Valid(ToDoCreated(c.userId, "new", c.desc))
+    }
 
 
+private fun execute(c: EditToDoItem): EsScope = {
+    val item = getEvents<ToDoEvent>(c.itemId).fold()
+    if (item is ActiveToDoItem)
+        Valid(ToDoEdited(c.itemId, c.newDesc))
+    else
+        Invalid(ToDoError("Item not enabled! ${item}", item))
+}
+
+private fun execute(c: CancelToDoItem): EsScope = {
+    val item = getEvents<ToDoEvent>(c.itemId).fold()
+    if (item is ActiveToDoItem)
+        Valid(ToDoCancelled(c.itemId))
+    else
+        Invalid(ToDoError("Item not enabled! ${item}", item))
+}
+
+private fun execute(c: MarkAsDoneToDoItem): EsScope = {
+    val item = getEvents<ToDoEvent>(c.itemId).fold()
+    if (item is ActiveToDoItem)
+        Valid(ToDoDone(c.itemId))
+    else
+        Invalid(ToDoError("Item not enabled! ${item}", item))
+}
