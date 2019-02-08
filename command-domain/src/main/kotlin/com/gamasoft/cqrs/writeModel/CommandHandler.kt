@@ -30,13 +30,13 @@ data class CommandMsg(val command: Command,
                       val response: CompletableDeferred<CmdResult>) // a command with a result
 
 
-class CommandHandler(val eventStore: EventStore) {
+class CommandHandler(val eventStore: EventStore): (CommandMsg) -> Unit {
 
+//
+//    //if we need we can have multiple instances
+//    val sendChannel =  createActor<CommandMsg> { executeCommand(it) }
 
-    //if we need we can have multiple instances
-//    val sendChannel = createActor<CommandMsg> { executeCommand(it) }
-
-    private fun executeCommand(msg: CommandMsg) {
+    override fun invoke(msg: CommandMsg) {
 
         val res = processPoly(msg.command)(eventStore)
 
@@ -63,16 +63,16 @@ class CommandHandler(val eventStore: EventStore) {
         return cmdResult
     }
 
-    fun handle(cmd: Command): CompletableDeferred<CmdResult> {
-
-        val msg = CommandMsg(cmd, CompletableDeferred())
-
+//    fun handle(cmd: Command): CompletableDeferred<CmdResult> {
+//
+//        val msg = CommandMsg(cmd, CompletableDeferred())
+//
 //        runBlocking { //use launch to execute commands in parallel slightly out of order
 //            sendChannel.send(msg)
 //        }
-
-        return msg.response
-    }
+//
+//        return msg.response
+//    }
 
 
 }

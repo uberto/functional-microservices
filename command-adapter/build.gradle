@@ -2,6 +2,9 @@ apply from: rootProject.file("gradle/kotlin.gradle")
 
 
 dependencies {
+    compile project(path: ":commons")
+    compile project(path: ":command-domain")
+
     compile libraries["kotlin"]
     compile libraries["kotlinx-coroutines"]
     compile http4k
