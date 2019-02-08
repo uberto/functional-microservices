@@ -6,6 +6,7 @@ dependencies {
 
     compile libraries["kotlin"]
     compile libraries["kotlinx-coroutines"]
+    compile json
 
     testCompile junit
 
