@@ -1,6 +1,6 @@
-package com.gamasoft.cqrs.bootstrap.configuration
+package com.gamasoft.cqrs.commons.configuration
 
-import com.gamasoft.cqrs.bootstrap.application.AppConfiguration
+import com.gamasoft.cqrs.commons.application.AppConfiguration
 
 data class ConfigurationMap(private val map: Map<String, String>): AppConfiguration {
     override fun get(key: String): String = map[key].orEmpty()

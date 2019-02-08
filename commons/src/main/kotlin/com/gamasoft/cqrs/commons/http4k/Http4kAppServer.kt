@@ -1,6 +1,6 @@
-package com.gamasoft.cqrs.bootstrap.http4k
+package com.gamasoft.cqrs.commons.http4k
 
-import com.gamasoft.cqrs.bootstrap.application.AppServer
+import com.gamasoft.cqrs.commons.application.AppServer
 import org.http4k.core.HttpHandler
 import org.http4k.server.Jetty
 import org.http4k.server.asServer

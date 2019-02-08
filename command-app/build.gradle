@@ -6,7 +6,7 @@ mainClassName = "com.gamasoft.cqrs.command.MainKt"
 
 dependencies {
     compile project(path: ":event-store-adapter")
-    compile project(path: ":bootstrap")
+    compile project(path: ":commons")
     compile project(path: ":command-adapter")
 
     testCompile junit

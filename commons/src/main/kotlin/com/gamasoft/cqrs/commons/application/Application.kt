@@ -1,4 +1,4 @@
-package com.gamasoft.cqrs.bootstrap.application
+package com.gamasoft.cqrs.commons.application
 
 typealias ServerFactory = (AppConfiguration) -> AppServer
 

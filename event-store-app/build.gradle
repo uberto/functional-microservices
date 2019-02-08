@@ -6,7 +6,7 @@ mainClassName = "com.gamasoft.cqrs.eventstore.Main"
 
 dependencies {
     compile project(path: ":event-store-adapter")
-    compile project(path: ":bootstrap")
+    compile project(path: ":commons")
 
     testCompile junit
 

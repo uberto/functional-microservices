@@ -1,8 +1,8 @@
 package com.gamasoft.cqrs.query
 
-import com.gamasoft.cqrs.bootstrap.application.Application
-import com.gamasoft.cqrs.bootstrap.configuration.ConfigurationMap
-import com.gamasoft.cqrs.bootstrap.http4k.Http4kFactory
+import com.gamasoft.cqrs.commons.application.Application
+import com.gamasoft.cqrs.commons.configuration.ConfigurationMap
+import com.gamasoft.cqrs.commons.http4k.Http4kFactory
 import com.gamasoft.cqrs.query.routes.QueryRoutes
 
 fun main() {

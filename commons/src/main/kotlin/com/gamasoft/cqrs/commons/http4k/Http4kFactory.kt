@@ -1,8 +1,8 @@
-package com.gamasoft.cqrs.bootstrap.http4k
+package com.gamasoft.cqrs.commons.http4k
 
-import com.gamasoft.cqrs.bootstrap.application.AppConfiguration
-import com.gamasoft.cqrs.bootstrap.application.AppServer
-import com.gamasoft.cqrs.bootstrap.application.ServerFactory
+import com.gamasoft.cqrs.commons.application.AppConfiguration
+import com.gamasoft.cqrs.commons.application.AppServer
+import com.gamasoft.cqrs.commons.application.ServerFactory
 import org.http4k.core.HttpHandler
 
 class Http4kFactory(private val handler: HttpHandler): ServerFactory {

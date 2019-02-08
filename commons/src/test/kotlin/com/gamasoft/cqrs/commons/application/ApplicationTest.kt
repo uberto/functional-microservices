@@ -1,8 +1,8 @@
-package com.gamasoft.cqrs.bootstrap.application
+package com.gamasoft.cqrs.commons.application
 
 import assertk.assertThat
 import assertk.assertions.isTrue
-import com.gamasoft.cqrs.bootstrap.configuration.ConfigurationMap
+import com.gamasoft.cqrs.commons.configuration.ConfigurationMap
 import org.junit.jupiter.api.Test
 
 internal class ApplicationTest {

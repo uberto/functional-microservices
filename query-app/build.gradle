@@ -6,7 +6,7 @@ mainClassName = "com.gamasoft.cqrs.query.Main"
 
 dependencies {
     compile project(path: ":event-store-adapter")
-    compile project(path: ":bootstrap")
+    compile project(path: ":commons")
     compile project(path: ":query-adapter")
 
     testCompile junit
