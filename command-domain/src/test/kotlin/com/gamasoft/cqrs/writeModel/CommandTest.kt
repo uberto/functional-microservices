@@ -14,10 +14,7 @@ class CommandTest {
     @Test
     fun serializeToJson() {
 
-        val actual = ObjectMapper()
-            .enableDefaultTyping()
-            .registerKotlinModule()
-            .writeValueAsString(cmd)
+        val actual = cmd.toJsonString()
 
         assertThat(actual).isEqualTo(json)
     }
@@ -25,11 +22,8 @@ class CommandTest {
     @Test
     fun deserializeFromJson() {
 
-        val command: Command = ObjectMapper()
-            .enableDefaultTyping()
-            .registerKotlinModule()
-            .readerFor(Command::class.java)
-            .readValue(json)
+        val command = Command.fromJsonString(json)
+
         assertThat(command.javaClass.simpleName).isEqualTo("CreateNewToDoItem")
     }
 }
